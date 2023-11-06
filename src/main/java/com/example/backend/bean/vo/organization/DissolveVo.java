@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class DissolveVo {
-    private Integer groupId;
-    private Integer creatorId;
+    private Integer group;
+    private Integer creator;
 
 }

@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class MemberVo {
-    private Integer creatorId;
-    private Integer groupId;
+    private Integer creator;
+    private Integer group;
 }

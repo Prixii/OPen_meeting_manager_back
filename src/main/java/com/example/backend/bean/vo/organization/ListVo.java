@@ -4,5 +4,5 @@ import lombok.Data;
 
 @Data
 public class ListVo {
-    private Integer accountId;
+    private Integer account;
 }

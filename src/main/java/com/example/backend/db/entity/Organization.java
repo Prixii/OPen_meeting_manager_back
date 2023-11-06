@@ -9,8 +9,7 @@ public class Organization {
     private Integer id;
     private Integer creator;
     private String name;
-    private List<Account> member;
-    private boolean dissolved;
+    private Integer dissolved;
 
     public Integer generateId() {
         id = (creator + name).hashCode();

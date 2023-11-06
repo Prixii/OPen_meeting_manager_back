@@ -4,6 +4,6 @@ import lombok.Data;
 
 @Data
 public class Participants {
-    private Integer meetingId;
-    private Integer accountId;
+    private Integer meeting;
+    private Integer account;
 }

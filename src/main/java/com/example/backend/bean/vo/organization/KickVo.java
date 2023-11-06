@@ -4,7 +4,7 @@ import lombok.Data;
 
 @Data
 public class KickVo {
-    private Integer accountId;
-    private Integer groupId;
-    private Integer creatorId;
+    private Integer account;
+    private Integer organization;
+    private Integer creator;
 }

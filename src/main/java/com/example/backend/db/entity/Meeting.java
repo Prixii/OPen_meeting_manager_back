@@ -12,9 +12,8 @@ public class Meeting{
     @TableId()
     private Integer id;
     private Integer creator;
-    private List<Account> member;
-    private boolean finished;
-    private boolean canceled;
+    private Integer finished;
+    private Integer canceled;
     private Date startTime;
     private Date endTime;
 
