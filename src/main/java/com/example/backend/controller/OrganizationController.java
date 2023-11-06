@@ -6,6 +6,7 @@ import com.example.backend.bean.vo.organization.*;
 import com.example.backend.db.entity.Account;
 import com.example.backend.db.entity.Organization;
 import com.example.backend.db.service.AccountService;
+import com.example.backend.db.service.MemberService;
 import com.example.backend.db.service.OrganizationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
@@ -25,6 +26,9 @@ public class OrganizationController {
 
     @Resource
     AccountService accountService;
+
+    @Resource
+    MemberService memberService;
 
     @ApiOperation("创建")
     @PostMapping("/create")
@@ -72,7 +76,7 @@ public class OrganizationController {
         if (account == null){
             return Result.fail(401, "用户不在组织内或不存在", null);
         }
-        List<Account> members = target.getMember();
+        List<Account> members = memberService.getMember(vo.getGroupId());
         members.remove(account);
         target.setMember(members);
         organizationService.updateById(target);
@@ -88,7 +92,7 @@ public class OrganizationController {
             return Result.fail("组织不存在");
         }
         Account account = accountService.getOne(new LambdaQueryWrapper<Account>().eq(Account::getId, vo.getAccountId()));
-        List<Account> members = target.getMember();
+        List<Account> members = memberService.getMember(vo.getGroupId());
         members.remove(account);
         organizationService.updateById(target);
         return Result.success("成功");
@@ -105,13 +109,12 @@ public class OrganizationController {
         if (!Objects.equals(target.getCreator(), vo.getCreatorId())) {
             return Result.fail(401, "权限不足", null);
         }
-        return  Result.success(target.getMember());
+        return  Result.success(memberService.getMember(target.getId()));
     }
 
     @ApiOperation("所在组织列表")
     @PostMapping("/list")
     public Result<List<Organization>> list(@RequestBody ListVo vo) {
-        var organizationList = organizationService.list(new LambdaQueryWrapper<Organization>().eq(Organization::getCreator, vo.getAccountId()));
-        return Result.success(organizationList);
+        return Result.success(memberService.getOrganization(vo.getAccountId()));
     }
 }
