@@ -10,6 +10,6 @@ public class Invitation {
     private Integer id;
 
     private Integer groupId;
-    private Integer userId;
+    private Integer accountId;
     private String state;
 }

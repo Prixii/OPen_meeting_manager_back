@@ -1,4 +1,4 @@
-package com.example.backend.bean.vo;
+package com.example.backend.bean.vo.account;
 
 import lombok.Data;
 

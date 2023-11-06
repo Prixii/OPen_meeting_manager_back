@@ -2,13 +2,12 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.backend.bean.Result;
-import com.example.backend.bean.vo.LoginVo;
-import com.example.backend.bean.vo.RegisterVo;
+import com.example.backend.bean.vo.account.LoginVo;
+import com.example.backend.bean.vo.account.RegisterVo;
 import com.example.backend.db.entity.Account;
 import com.example.backend.db.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
