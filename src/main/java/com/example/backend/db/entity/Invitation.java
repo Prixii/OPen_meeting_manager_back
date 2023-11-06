@@ -6,7 +6,7 @@ import lombok.Data;
 
 @Data
 public class Invitation {
-    @TableId(type = IdType.AUTO)
+    @TableId()
     private Integer id;
 
     private Integer groupId;

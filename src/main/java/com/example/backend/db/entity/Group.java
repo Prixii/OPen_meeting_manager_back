@@ -8,11 +8,11 @@ import java.util.List;
 
 @Data
 public class Group {
-    @TableId(type =  IdType.AUTO)
+    @TableId()
     private Integer id;
 
     private Integer creator;
 
-    private List<User> member;
+    private List<Account> member;
 
 }
