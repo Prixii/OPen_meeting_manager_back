@@ -20,7 +20,6 @@ import java.util.Objects;
 @RestController
 @RequestMapping("organization")
 @Api(tags ="Organization")
-
 public class OrganizationController {
     @Resource
     OrganizationService organizationService;
@@ -97,28 +96,28 @@ public class OrganizationController {
     }
 
     @ApiOperation("成员")
-    @PostMapping("/member")
-    public Result<List<Account>> member(@RequestBody MemberVo vo) {
+    @GetMapping("/member")
+    public Result<List<Account>> member(@RequestParam Integer creator, @RequestParam Integer organization) {
         Organization target =
-                organizationService.getOne( new LambdaQueryWrapper<Organization>().eq(Organization::getId, vo.getGroup()));
+                organizationService.getOne( new LambdaQueryWrapper<Organization>().eq(Organization::getId, organization));
         if (target == null){
             return Result.fail("组织不存在");
         }
-        if (!Objects.equals(target.getCreator(), vo.getCreator())) {
+        if (!Objects.equals(target.getCreator(), creator)) {
             return Result.fail(401, "权限不足", null);
         }
         return  Result.success(memberService.getMember(target.getId()));
     }
 
     @ApiOperation("所在组织列表")
-    @PostMapping("/list")
-    public Result<List<Organization>> list(@RequestBody ListVo vo) {
-        return Result.success(memberService.getOrganization(vo.getAccount()));
+    @GetMapping("/list")
+    public Result<List<Organization>> list(@RequestParam Integer account) {
+        return Result.success(memberService.getOrganization(account));
     }
 
     @ApiOperation("创建的组织列表")
-    @PostMapping("/managering")
-    public Result<List<Organization>> managering(@RequestBody ListVo vo) {
-        return Result.success(organizationService.list(new LambdaQueryWrapper<Organization>().eq(Organization::getCreator, vo.getAccount())));
+    @GetMapping("/manager")
+    public Result<List<Organization>> manager(@RequestParam Integer account) {
+        return Result.success(organizationService.list(new LambdaQueryWrapper<Organization>().eq(Organization::getCreator, account)));
     }
 }

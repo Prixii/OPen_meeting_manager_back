@@ -1,6 +1,10 @@
 package com.example.backend.db.entity;
 
+import com.example.backend.enums.InvitationState;
 import lombok.Data;
+
+import java.sql.Time;
+import java.util.Date;
 
 @Data
 public class Invitation {
@@ -8,4 +12,18 @@ public class Invitation {
     private Integer organization;
     private Integer account;
     private String state;
+
+    public void accept() {
+        state = InvitationState.ACCEPTED.getValue();
+    }
+
+    public void refuse() {
+        state = InvitationState.REFUSED.getValue();
+    }
+
+    public void generateId() { id = (organization.toString() + account.toString() + new Date(System.currentTimeMillis()).toString()).hashCode();}
+
+    public void initState() {state = InvitationState.WAITING.getValue();}
+
+    public boolean belongTo(int account) {return account == this.account;}
 }

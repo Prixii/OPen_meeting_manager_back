@@ -1,0 +1,87 @@
+package com.example.backend.controller;
+
+import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
+import com.example.backend.bean.Result;
+import com.example.backend.bean.vo.invitation.AcceptVo;
+import com.example.backend.bean.vo.invitation.CreateVo;
+import com.example.backend.bean.vo.invitation.RefuseVo;
+import com.example.backend.db.entity.Invitation;
+import com.example.backend.db.service.InvitationService;
+import com.example.backend.db.service.MemberService;
+import com.example.backend.db.service.OrganizationService;
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
+import org.springframework.web.bind.annotation.*;
+
+import javax.annotation.Resource;
+import java.util.List;
+
+@RestController
+@RequestMapping("invitation")
+@Api(tags ="Invitation")
+public class InvitationController {
+
+    @Resource
+    InvitationService invitationService;
+
+    @Resource
+    OrganizationService organizationService;
+
+    @Resource
+    MemberService memberService;
+
+    @ApiOperation("邀请列表")
+    @GetMapping("/list")
+    Result<List<Invitation>> list(@RequestParam Integer account) {
+        return Result.success(invitationService.list(new LambdaQueryWrapper<Invitation>().eq(Invitation::getAccount, account)));
+    }
+
+    @ApiOperation("发起邀请")
+    @PostMapping("/create")
+    Result<Object> create(@RequestBody CreateVo vo) {
+        if (organizationService.isCreator(vo.getCreator(), vo.getOrganization())){
+            Invitation newInvitation = new Invitation();
+            BeanUtils.copyProperties(vo, newInvitation);
+            newInvitation.generateId();
+            newInvitation.initState();
+            if (invitationService.save(newInvitation)) {
+                return Result.success("邀请成功");
+            } else {
+                return Result.fail("");
+            }
+        }
+        return Result.fail(401, "权限不足", null);
+    }
+
+    @ApiOperation("接受邀请")
+    @PostMapping("/accept")
+    Result<Object> accept(@RequestBody AcceptVo vo) {
+        Invitation invitation = invitationService.getById(vo.getInvitation());
+        if (invitation.belongTo(vo.getAccount())) {
+            invitation.accept();
+            memberService.addMember(invitation.getAccount(),invitation.getOrganization());
+            if (invitationService.updateById(invitation)){
+                return Result.success("接受成功");
+            } else {
+                return Result.fail("");
+            }
+        }
+        return Result.fail(401, "权限不足", null);
+    }
+
+    @ApiOperation("拒绝邀请")
+    @PostMapping("/refuse")
+    Result<Object> refuse(@RequestBody RefuseVo vo){
+        Invitation invitation = invitationService.getById(vo.getInvitation());
+        if (invitation.belongTo(vo.getAccount())) {
+            invitation.refuse();
+            if (invitationService.updateById(invitation)){
+                return Result.success("拒绝成功");
+            } else {
+                return Result.fail("");
+            }
+        }
+        return Result.fail(401, "权限不足", null);
+    }
+}

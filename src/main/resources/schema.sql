@@ -19,13 +19,13 @@ CREATE TABLE invitation (
     id INTEGER PRIMARY KEY ,
     organization INTEGER,
     account INTEGER,
-    state VARCHAR(1)
+    state VARCHAR(1),
     CONSTRAINT invitation_organization_ref FOREIGN KEY (organization) REFERENCES organization(id) ,
-    CONSTRAINT invitation_account_ref FOREIGN KEY (account) REFERENCES account(id),
+    CONSTRAINT invitation_account_ref FOREIGN KEY (account) REFERENCES account(id)
 );
 
 CREATE TABLE member (
-    id INTEGER PRIMARY KEY ,
+    id INTEGER PRIMARY KEY,
     organization INTEGER,
     account INTEGER,
     CONSTRAINT member_organization_ref FOREIGN KEY (organization) REFERENCES organization(id) ,

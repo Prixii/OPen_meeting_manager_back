@@ -24,12 +24,12 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     AccountService accountService;
 
     @Override
-    public List<Organization> getOrganization(Integer memberId) {
-        List<Member> members = list(new LambdaQueryWrapper<Member>().eq(Member::getAccount, memberId));
+    public List<Organization> getOrganization(Integer member) {
+        List<Member> members = list(new LambdaQueryWrapper<Member>().eq(Member::getAccount, member));
         List<Organization> organizations = new ArrayList<>();
-        for (Member member:
+        for (Member memberItem:
                 members ) {
-           var item = organizationService.getById(member.getOrganization());
+           var item = organizationService.getById(memberItem.getOrganization());
            if(item != null) {
               organizations.add(item);
             }
@@ -38,16 +38,22 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     }
 
     @Override
-    public List<Account> getMember(Integer organizationId) {
-        List<Member> members = list(new LambdaQueryWrapper<Member>().eq(Member::getOrganization, organizationId));
+    public List<Account> getMember(Integer organization) {
+        List<Member> members = list(new LambdaQueryWrapper<Member>().eq(Member::getOrganization, organization));
         List<Account> accounts = new ArrayList<>();
-        for (Member member:
+        for (Member memberItem:
              members) {
-            var item = accountService.getById(member.getAccount());
+            var item = accountService.getById(memberItem.getAccount());
             if (item != null) {
                 accounts.add(item);
             }
         }
         return accounts;
+    }
+
+    @Override
+    public void addMember(Integer account, Integer organization) {
+        Member newMember = new Member((account.toString() + organization.toString()).hashCode(),account, organization);
+        save(newMember);
     }
 }

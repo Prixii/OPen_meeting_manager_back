@@ -33,5 +33,8 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
         return -1;
     }
 
-
+    @Override
+    public boolean isCreator(Integer account, Integer organization) {
+        return getOne(new LambdaQueryWrapper<Organization>().eq(Organization::getCreator, account).eq(Organization::getId, organization)) != null;
+    }
 }
