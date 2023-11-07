@@ -2,6 +2,7 @@ package com.example.backend.db.entity;
 
 import com.example.backend.enums.InvitationState;
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 import java.sql.Time;
 import java.util.Date;
@@ -21,9 +22,18 @@ public class Invitation {
         state = InvitationState.REFUSED.getValue();
     }
 
-    public void generateId() { id = (organization.toString() + account.toString() + new Date(System.currentTimeMillis()).toString()).hashCode();}
+    public void generateId() { id = (organization.toString() + account.toString() + new Date(System.currentTimeMillis())).hashCode();}
 
     public void initState() {state = InvitationState.WAITING.getValue();}
 
+    public void init(Object src) {
+        if (src != null){
+            BeanUtils.copyProperties(src, this);
+        }
+        generateId();
+        initState();
+    }
+
     public boolean belongTo(int account) {return account == this.account;}
+
 }

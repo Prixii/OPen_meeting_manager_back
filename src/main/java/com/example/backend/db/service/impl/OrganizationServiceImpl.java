@@ -2,7 +2,6 @@ package com.example.backend.db.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.example.backend.bean.Result;
 import com.example.backend.bean.vo.organization.CreateVo;
 import com.example.backend.db.entity.Organization;
 import com.example.backend.db.mapper.OrganizationMapper;
@@ -25,8 +24,7 @@ public class OrganizationServiceImpl extends ServiceImpl<OrganizationMapper, Org
     @Override
     public Integer create(CreateVo vo) {
         Organization newOrganization = new Organization();
-        BeanUtils.copyProperties(vo, newOrganization);
-        Integer organizationId = newOrganization.generateId();
+        Integer organizationId = newOrganization.init(vo);
         if (save(newOrganization)) {
             return organizationId;
         }

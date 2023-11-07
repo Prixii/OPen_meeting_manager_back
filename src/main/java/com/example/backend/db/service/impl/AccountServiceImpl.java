@@ -18,8 +18,7 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
 
     public Integer register(RegisterVo vo) {
         Account newAccount = new Account();
-        BeanUtils.copyProperties(vo, newAccount);
-        Integer accountId = newAccount.setId();
+        Integer accountId = newAccount.init(vo);
         if (save(newAccount)) {
             return accountId;
         } else {

@@ -42,9 +42,7 @@ public class InvitationController {
     Result<Object> create(@RequestBody CreateVo vo) {
         if (organizationService.isCreator(vo.getCreator(), vo.getOrganization())){
             Invitation newInvitation = new Invitation();
-            BeanUtils.copyProperties(vo, newInvitation);
-            newInvitation.generateId();
-            newInvitation.initState();
+            newInvitation.init(vo);
             if (invitationService.save(newInvitation)) {
                 return Result.success("邀请成功");
             } else {

@@ -1,8 +1,7 @@
 package com.example.backend.db.entity;
 
 import lombok.Data;
-
-import java.util.List;
+import org.springframework.beans.BeanUtils;
 
 @Data
 public class Organization {
@@ -11,8 +10,11 @@ public class Organization {
     private String name;
     private Integer dissolved;
 
-    public Integer generateId() {
-        id = (creator + name).hashCode();
+    public Integer init(Object src) {
+        if (src != null) {
+            BeanUtils.copyProperties(src, this);
+        }
+        id = (this.toString()).hashCode();
         return id;
     }
 }

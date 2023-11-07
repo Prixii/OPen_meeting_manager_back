@@ -43,6 +43,7 @@ CREATE TABLE meeting (
 );
 
 CREATE TABLE participants (
+    id INTEGER PRIMARY KEY ,
     account INTEGER,
     meeting INTEGER,
     CONSTRAINT participants_account_ref FOREIGN KEY (account) REFERENCES account(id),

@@ -1,6 +1,7 @@
 package com.example.backend.db.entity;
 
 import lombok.Data;
+import org.springframework.beans.BeanUtils;
 
 @Data
 public class Account {
@@ -9,7 +10,10 @@ public class Account {
     private String phone;
     private String password;
 
-    public Integer setId() {
+    public Integer init(Object src) {
+        if (src != null){
+            BeanUtils.copyProperties(src, this);
+        }
         id = (name + phone + password).hashCode();
         return id;
     }
