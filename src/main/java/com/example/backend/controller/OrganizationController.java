@@ -84,12 +84,12 @@ public class OrganizationController {
     @PostMapping("/leave")
     public Result<Object> leave(@RequestBody LeaveVo vo) {
         Organization target =
-                organizationService.getOne( new LambdaQueryWrapper<Organization>().eq(Organization::getId, vo.getGroup()));
+                organizationService.getOne( new LambdaQueryWrapper<Organization>().eq(Organization::getId, vo.getOrganization()));
         if (target == null){
             return Result.fail("组织不存在");
         }
         Account account = accountService.getOne(new LambdaQueryWrapper<Account>().eq(Account::getId, vo.getAccount()));
-        List<Account> members = memberService.getMember(vo.getGroup());
+        List<Account> members = memberService.getMember(vo.getOrganization());
         members.remove(account);
         organizationService.updateById(target);
         return Result.success("成功");

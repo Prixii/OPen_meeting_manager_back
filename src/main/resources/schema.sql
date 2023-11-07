@@ -33,13 +33,13 @@ CREATE TABLE member (
 );
 
 CREATE TABLE meeting (
-    id INTEGER PRIMARY KEY ,
+    id INTEGER PRIMARY KEY,
     creator INTEGER,
     finished SMALLINT,
     canceled SMALLINT,
-    startTime DATE,
-    endTime DATE
-    CONSTRAINT meeting_creator_ref FOREIGN KEY (creator) REFERENCES account(id),
+    start_time VARCHAR(64),
+    end_time VARCHAR(64),
+    CONSTRAINT meeting_creator_ref FOREIGN KEY (creator) REFERENCES account(id)
 );
 
 CREATE TABLE participants (

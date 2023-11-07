@@ -25,4 +25,9 @@ public class AccountServiceImpl extends ServiceImpl<AccountMapper, Account> impl
             return  -1;
         }
     }
+
+    @Override
+    public Account getByPhone(String phone) {
+        return getOne(new LambdaQueryWrapper<Account>().eq(Account::getPhone, phone));
+    }
 }

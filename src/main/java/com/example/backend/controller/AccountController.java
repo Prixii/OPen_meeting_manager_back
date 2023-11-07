@@ -8,10 +8,7 @@ import com.example.backend.db.entity.Account;
 import com.example.backend.db.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
 import java.util.List;
@@ -24,7 +21,7 @@ public class AccountController {
     @Resource
     AccountService service;
 
-    @ApiOperation("创建")
+    @ApiOperation("注册")
     @PostMapping("/register")
     public Result<Integer> register(@RequestBody RegisterVo vo) {
         if(service.isUserExist(vo.getPhone())){
@@ -54,7 +51,19 @@ public class AccountController {
         }
     }
 
-    //TODO 删除
+    @ApiOperation("搜索")
+    @GetMapping("/search")
+    public Result<Account> login(@RequestParam String phone ) {
+        var result = service.getByPhone(phone);
+        if (result == null) {
+            return Result.fail("对象不存在");
+        } else {
+            return Result.success(result);
+        }
+
+    }
+
+    @Deprecated
     @PostMapping("/list")
     public Result<List<Account>> list() {
         return Result.success(service.list());

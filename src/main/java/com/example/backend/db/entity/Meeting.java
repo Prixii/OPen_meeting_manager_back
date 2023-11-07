@@ -1,13 +1,10 @@
 package com.example.backend.db.entity;
 
-import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.example.backend.util.CommonUtil;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
-import java.util.Date;
-import java.util.List;
 import java.util.Objects;
 
 @Data
@@ -17,15 +14,16 @@ public class Meeting{
     private Integer creator;
     private Integer finished;
     private Integer canceled;
-    private Date startTime;
-    private Date endTime;
+    private String startTime;
+    private String endTime;
 
     public Integer init(Object src) {
         if (src != null){
             BeanUtils.copyProperties(src, this);
         }
         canceled = 0;
-        id = (this.toString() + CommonUtil.currentTime()).hashCode();
+        finished = 0;
+        id = (this.toString() + CommonUtil.randomize()).hashCode();
         return id;
     }
 

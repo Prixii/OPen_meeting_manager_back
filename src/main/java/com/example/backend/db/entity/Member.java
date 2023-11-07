@@ -17,7 +17,8 @@ public class Member {
     public void init(Object src) {
         if (src != null) {
             BeanUtils.copyProperties(src, this);
-            id = (this.toString() + CommonUtil.currentTime()).hashCode();
+            System.out.println(CommonUtil.randomize());
+            id = (this.toString() + CommonUtil.randomize()).hashCode();
         }
     }
 }

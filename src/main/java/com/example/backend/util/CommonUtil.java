@@ -1,7 +1,8 @@
 package com.example.backend.util;
 
-import java.util.Date;
+import java.util.Random;
 
 public class CommonUtil {
-    public static Date currentTime() { return  new Date(System.currentTimeMillis()); }
+    static Random random = new Random();
+    public static String randomize() { return  Long.toString(System.currentTimeMillis()) + random.nextInt() ; }
 }

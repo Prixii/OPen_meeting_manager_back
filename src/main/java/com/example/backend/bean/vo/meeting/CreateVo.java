@@ -10,6 +10,6 @@ public class CreateVo {
     private Integer creator;
     private String name;
     private List<Integer> participants;
-    private Date startTime;
-    private Date endTime;
+    private String  startTime;
+    private String  endTime;
 }

@@ -16,7 +16,7 @@ public class Participants {
     public Integer init(Integer meeting, Integer account) {
         this.meeting = meeting;
         this.account = account;
-        id = (this.toString() + CommonUtil.currentTime()).hashCode();
+        id = (this.toString() + CommonUtil.randomize()).hashCode();
         return id;
     }
 }

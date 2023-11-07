@@ -40,7 +40,6 @@ public class MeetingController {
             }
         }
         return Result.fail("保存错误");
-
     }
 
     @ApiOperation("取消会议")

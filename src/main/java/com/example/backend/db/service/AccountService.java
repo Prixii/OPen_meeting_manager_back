@@ -8,4 +8,5 @@ import com.example.backend.db.entity.Account;
 public interface AccountService extends IService<Account> {
     boolean isUserExist(String phone);
     Integer register(RegisterVo vo);
+    Account getByPhone(String phone);
 }

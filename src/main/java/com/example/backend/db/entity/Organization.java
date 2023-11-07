@@ -1,5 +1,6 @@
 package com.example.backend.db.entity;
 
+import com.example.backend.util.CommonUtil;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
 
@@ -14,7 +15,8 @@ public class Organization {
         if (src != null) {
             BeanUtils.copyProperties(src, this);
         }
-        id = (this.toString()).hashCode();
+        dissolved = 0;
+        id = (this.toString() + CommonUtil.randomize()).hashCode();
         return id;
     }
 }

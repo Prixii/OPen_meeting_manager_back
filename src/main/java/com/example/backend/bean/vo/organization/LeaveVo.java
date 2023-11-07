@@ -5,5 +5,5 @@ import lombok.Data;
 @Data
 public class LeaveVo {
     private Integer account;
-    private Integer group;
+    private Integer organization;
 }
