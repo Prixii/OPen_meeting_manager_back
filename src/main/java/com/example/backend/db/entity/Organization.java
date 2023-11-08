@@ -16,7 +16,7 @@ public class Organization {
             BeanUtils.copyProperties(src, this);
         }
         dissolved = 0;
-        id = (this.toString() + CommonUtil.randomize()).hashCode();
+        id = (this + CommonUtil.randomize()).hashCode();
         return id;
     }
 }

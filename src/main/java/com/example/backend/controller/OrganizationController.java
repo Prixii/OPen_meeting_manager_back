@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.backend.bean.Result;
+import com.example.backend.bean.dto.organization.ListDto;
 import com.example.backend.bean.dto.organization.MemberDto;
 import com.example.backend.bean.vo.organization.*;
 import com.example.backend.db.entity.Account;
@@ -16,6 +17,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -109,13 +111,33 @@ public class OrganizationController {
 
     @ApiOperation("所在组织列表")
     @GetMapping("/list")
-    public Result<List<Organization>> list(@RequestParam Integer account) {
-        return Result.success(memberService.getOrganization(account));
+    public Result<List<ListDto>> list(@RequestParam Integer account) {
+        var list = memberService.getOrganization(account);
+        var result = new ArrayList<ListDto>();
+        for (Organization item:
+             list) {
+            if (item.getDissolved() == 0) {
+                var dto = new ListDto();
+                BeanUtils.copyProperties(item, dto);
+                result.add(dto);
+            }
+        }
+        return Result.success(result);
     }
 
     @ApiOperation("创建的组织列表")
     @GetMapping("/manager")
-    public Result<List<Organization>> manager(@RequestParam Integer account) {
-        return Result.success(organizationService.list(new LambdaQueryWrapper<Organization>().eq(Organization::getCreator, account)));
+    public Result<List<ListDto>> manager(@RequestParam Integer account) {
+        var list = organizationService.list(new LambdaQueryWrapper<Organization>().eq(Organization::getCreator, account));
+        var result = new ArrayList<ListDto>();
+        for (Organization item:
+                list) {
+            if (item.getDissolved() == 0) {
+                var dto = new ListDto();
+                BeanUtils.copyProperties(item, dto);
+                result.add(dto);
+            }
+        }
+        return Result.success(result);
     }
 }

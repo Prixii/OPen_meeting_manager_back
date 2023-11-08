@@ -41,7 +41,9 @@ public class InvitationController {
         for (Invitation invitation:
              invitations) {
             var listDto = new ListDto();
+            var organization = organizationService.getById(invitation.getId());
             BeanUtils.copyProperties(invitation, listDto);
+            listDto.setOrganizationName(organization.getName());
             records.add(listDto);
         }
         return Result.success(records);

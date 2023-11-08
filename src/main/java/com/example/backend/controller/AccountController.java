@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.backend.bean.Result;
+import com.example.backend.bean.dto.account.LoginDto;
 import com.example.backend.bean.dto.account.SearchDto;
 import com.example.backend.bean.vo.account.LoginVo;
 import com.example.backend.bean.vo.account.RegisterVo;
@@ -40,16 +41,16 @@ public class AccountController {
 
     @ApiOperation("登录")
     @PostMapping("/login")
-    public Result<Integer> login(@RequestBody LoginVo vo) {
+    public Result<LoginDto> login(@RequestBody LoginVo vo) {
         Account targetAccount = service.getOne(new LambdaQueryWrapper<Account>().eq(Account::getPhone, vo.getPhone()));
         if (targetAccount == null) {
             return Result.fail("用户不存在");
         }
 
         if (Objects.equals(vo.getPassword(), targetAccount.getPassword())) {
-            return Result.success(targetAccount.getId());
+            return Result.success(new LoginDto(targetAccount.getId(),targetAccount.getName()));
         } else {
-            return Result.fail(401, "密码错误", -1);
+            return Result.fail(401, "密码错误", null);
         }
     }
 

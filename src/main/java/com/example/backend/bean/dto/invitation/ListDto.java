@@ -6,5 +6,6 @@ import lombok.Data;
 public class ListDto {
     private Integer id;
     private Integer organization;
+    private String organizationName;
     private String state;
 }
