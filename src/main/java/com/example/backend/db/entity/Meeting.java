@@ -1,6 +1,5 @@
 package com.example.backend.db.entity;
 
-import com.baomidou.mybatisplus.annotation.TableId;
 import com.example.backend.util.CommonUtil;
 import lombok.Data;
 import org.springframework.beans.BeanUtils;
@@ -9,8 +8,8 @@ import java.util.Objects;
 
 @Data
 public class Meeting{
-    @TableId()
     private Integer id;
+    private String title;
     private Integer creator;
     private Integer finished;
     private Integer canceled;
@@ -23,7 +22,7 @@ public class Meeting{
         }
         canceled = 0;
         finished = 0;
-        id = (this.toString() + CommonUtil.randomize()).hashCode();
+        id = (this + CommonUtil.randomize()).hashCode();
         return id;
     }
 

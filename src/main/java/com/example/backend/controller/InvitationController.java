@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.backend.bean.Result;
+import com.example.backend.bean.dto.invitation.ListDto;
 import com.example.backend.bean.vo.invitation.AcceptVo;
 import com.example.backend.bean.vo.invitation.CreateVo;
 import com.example.backend.bean.vo.invitation.RefuseVo;
@@ -15,6 +16,7 @@ import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -33,8 +35,16 @@ public class InvitationController {
 
     @ApiOperation("邀请列表")
     @GetMapping("/list")
-    Result<List<Invitation>> list(@RequestParam Integer account) {
-        return Result.success(invitationService.list(new LambdaQueryWrapper<Invitation>().eq(Invitation::getAccount, account)));
+    Result<List<ListDto>> list(@RequestParam Integer account) {
+        var invitations =invitationService.list(new LambdaQueryWrapper<Invitation>().eq(Invitation::getAccount, account));
+        var records = new ArrayList<ListDto>();
+        for (Invitation invitation:
+             invitations) {
+            var listDto = new ListDto();
+            BeanUtils.copyProperties(invitation, listDto);
+            records.add(listDto);
+        }
+        return Result.success(records);
     }
 
     @ApiOperation("发起邀请")

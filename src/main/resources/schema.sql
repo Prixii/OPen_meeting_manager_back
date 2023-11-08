@@ -34,6 +34,7 @@ CREATE TABLE member (
 
 CREATE TABLE meeting (
     id INTEGER PRIMARY KEY,
+    title VARCHAR(64),
     creator INTEGER,
     finished SMALLINT,
     canceled SMALLINT,

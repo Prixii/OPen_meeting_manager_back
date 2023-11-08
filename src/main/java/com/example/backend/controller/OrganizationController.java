@@ -2,6 +2,7 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.backend.bean.Result;
+import com.example.backend.bean.dto.organization.MemberDto;
 import com.example.backend.bean.vo.organization.*;
 import com.example.backend.db.entity.Account;
 import com.example.backend.db.entity.Member;
@@ -11,6 +12,7 @@ import com.example.backend.db.service.MemberService;
 import com.example.backend.db.service.OrganizationService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -75,8 +77,7 @@ public class OrganizationController {
         if (account == null){
             return Result.fail(401, "用户不在组织内或不存在", null);
         }
-        memberService.remove(new LambdaQueryWrapper<Member>().eq(Member::getOrganization, vo.getOrganization()).eq(Member::getAccount, vo.getAccount()));
-        organizationService.updateById(target);
+        memberService.removeMember(vo.getAccount(), vo.getOrganization());
         return Result.success("成功");
     }
 
@@ -88,16 +89,13 @@ public class OrganizationController {
         if (target == null){
             return Result.fail("组织不存在");
         }
-        Account account = accountService.getOne(new LambdaQueryWrapper<Account>().eq(Account::getId, vo.getAccount()));
-        List<Account> members = memberService.getMember(vo.getOrganization());
-        members.remove(account);
-        organizationService.updateById(target);
+        memberService.removeMember(vo.getAccount(), vo.getOrganization());
         return Result.success("成功");
     }
 
     @ApiOperation("成员")
     @GetMapping("/member")
-    public Result<List<Account>> member(@RequestParam Integer creator, @RequestParam Integer organization) {
+    public Result<List<MemberDto>> member(@RequestParam Integer creator, @RequestParam Integer organization) {
         Organization target =
                 organizationService.getOne( new LambdaQueryWrapper<Organization>().eq(Organization::getId, organization));
         if (target == null){

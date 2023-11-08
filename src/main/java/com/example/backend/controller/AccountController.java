@@ -2,12 +2,14 @@ package com.example.backend.controller;
 
 import com.baomidou.mybatisplus.core.conditions.query.LambdaQueryWrapper;
 import com.example.backend.bean.Result;
+import com.example.backend.bean.dto.account.SearchDto;
 import com.example.backend.bean.vo.account.LoginVo;
 import com.example.backend.bean.vo.account.RegisterVo;
 import com.example.backend.db.entity.Account;
 import com.example.backend.db.service.AccountService;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import org.springframework.beans.BeanUtils;
 import org.springframework.web.bind.annotation.*;
 
 import javax.annotation.Resource;
@@ -53,18 +55,20 @@ public class AccountController {
 
     @ApiOperation("搜索")
     @GetMapping("/search")
-    public Result<Account> login(@RequestParam String phone ) {
+    public Result<SearchDto> login(@RequestParam String phone ) {
         var result = service.getByPhone(phone);
         if (result == null) {
             return Result.fail("对象不存在");
         } else {
-            return Result.success(result);
+            var searchDto = new SearchDto();
+            BeanUtils.copyProperties(result, searchDto);
+            return Result.success(searchDto);
         }
 
     }
 
     @Deprecated
-    @PostMapping("/list")
+    @GetMapping("/list")
     public Result<List<Account>> list() {
         return Result.success(service.list());
     }
