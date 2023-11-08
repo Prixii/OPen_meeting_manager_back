@@ -6,7 +6,6 @@ import com.example.backend.bean.dto.organization.ListDto;
 import com.example.backend.bean.dto.organization.MemberDto;
 import com.example.backend.bean.vo.organization.*;
 import com.example.backend.db.entity.Account;
-import com.example.backend.db.entity.Member;
 import com.example.backend.db.entity.Organization;
 import com.example.backend.db.service.AccountService;
 import com.example.backend.db.service.MemberService;
@@ -37,6 +36,7 @@ public class OrganizationController {
     @ApiOperation("创建")
     @PostMapping("/create")
     public Result<Integer> create(@RequestBody CreateVo vo) {
+        System.out.println(vo);
         var organizationId = organizationService.create(vo);
         if (organizationId != -1) {
             return Result.success(organizationId);
@@ -50,7 +50,7 @@ public class OrganizationController {
     @PostMapping("/dissolve")
     public Result<Object> dissolve(@RequestBody DissolveVo vo) {
         Organization target =
-        organizationService.getOne( new LambdaQueryWrapper<Organization>().eq(Organization::getId, vo.getGroup()));
+        organizationService.getOne( new LambdaQueryWrapper<Organization>().eq(Organization::getId, vo.getOrganization()));
         if (target == null){
             return Result.fail("组织不存在");
         }
@@ -126,8 +126,8 @@ public class OrganizationController {
     }
 
     @ApiOperation("创建的组织列表")
-    @GetMapping("/manager")
-    public Result<List<ListDto>> manager(@RequestParam Integer account) {
+    @GetMapping("/manage")
+    public Result<List<ListDto>> manage(@RequestParam Integer account) {
         var list = organizationService.list(new LambdaQueryWrapper<Organization>().eq(Organization::getCreator, account));
         var result = new ArrayList<ListDto>();
         for (Organization item:
