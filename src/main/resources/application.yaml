@@ -1,9 +1,9 @@
-dbBaseDir: /tmp/derby
+dbBaseDir: /db/derby
 
 spring:
   datasource:
     type: com.alibaba.druid.pool.DruidDataSource
-    url: jdbc:derby:${dbBaseDir}/MyDB;create=true
+    url: jdbc:derby:${user.dir}/${dbBaseDir}/MyDB;create=true
     username: root
     password: 6sbfevhBMA6o5RPE3gP5
     driver-class-name: org.apache.derby.jdbc.EmbeddedDriver
