@@ -24,10 +24,11 @@ public class Invitation {
 
     public void initState() {state = InvitationState.WAITING.getValue();}
 
-    public void init(Object src) {
+    public void init(Object src, Integer accountId) {
         if (src != null){
             BeanUtils.copyProperties(src, this);
         }
+        account = accountId;
         generateId();
         initState();
     }

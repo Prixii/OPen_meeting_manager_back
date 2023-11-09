@@ -7,6 +7,7 @@ import com.example.backend.bean.vo.invitation.AcceptVo;
 import com.example.backend.bean.vo.invitation.CreateVo;
 import com.example.backend.bean.vo.invitation.RefuseVo;
 import com.example.backend.db.entity.Invitation;
+import com.example.backend.db.service.AccountService;
 import com.example.backend.db.service.InvitationService;
 import com.example.backend.db.service.MemberService;
 import com.example.backend.db.service.OrganizationService;
@@ -31,6 +32,9 @@ public class InvitationController {
     OrganizationService organizationService;
 
     @Resource
+    AccountService accountService;
+
+    @Resource
     MemberService memberService;
 
     @ApiOperation("邀请列表")
@@ -41,7 +45,7 @@ public class InvitationController {
         for (Invitation invitation:
              invitations) {
             var listDto = new ListDto();
-            var organization = organizationService.getById(invitation.getId());
+            var organization = organizationService.getById(invitation.getOrganization());
             BeanUtils.copyProperties(invitation, listDto);
             listDto.setOrganizationName(organization.getName());
             records.add(listDto);
@@ -54,7 +58,8 @@ public class InvitationController {
     Result<Object> create(@RequestBody CreateVo vo) {
         if (organizationService.isCreator(vo.getCreator(), vo.getOrganization())){
             Invitation newInvitation = new Invitation();
-            newInvitation.init(vo);
+            var account = accountService.getByPhone(vo.getPhone());
+            newInvitation.init(vo, account.getId());
             if (invitationService.save(newInvitation)) {
                 return Result.success("邀请成功");
             } else {

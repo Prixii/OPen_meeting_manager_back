@@ -5,6 +5,6 @@ import lombok.Data;
 @Data
 public class CreateVo {
     private Integer organization;
-    private Integer account;
+    private String phone;
     private Integer creator;
 }
