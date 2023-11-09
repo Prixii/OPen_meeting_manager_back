@@ -11,6 +11,7 @@ import com.example.backend.db.service.AccountService;
 import com.example.backend.db.service.InvitationService;
 import com.example.backend.db.service.MemberService;
 import com.example.backend.db.service.OrganizationService;
+import com.example.backend.enums.InvitationState;
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.BeanUtils;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 import javax.annotation.Resource;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 @RestController
 @RequestMapping("invitation")
@@ -44,6 +46,7 @@ public class InvitationController {
         var records = new ArrayList<ListDto>();
         for (Invitation invitation:
              invitations) {
+            if (!Objects.equals(invitation.getState(), InvitationState.WAITING.getValue())) { continue; }
             var listDto = new ListDto();
             var organization = organizationService.getById(invitation.getOrganization());
             BeanUtils.copyProperties(invitation, listDto);

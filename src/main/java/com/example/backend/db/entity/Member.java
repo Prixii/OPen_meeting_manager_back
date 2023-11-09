@@ -18,7 +18,7 @@ public class Member {
         if (src != null) {
             BeanUtils.copyProperties(src, this);
             System.out.println(CommonUtil.randomize());
-            id = (this.toString() + CommonUtil.randomize()).hashCode();
+            id = (this + CommonUtil.randomize()).hashCode();
         }
     }
 }

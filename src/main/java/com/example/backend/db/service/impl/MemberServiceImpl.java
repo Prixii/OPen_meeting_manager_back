@@ -42,17 +42,18 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
     @Override
     public List<MemberDto> getMember(Integer organization) {
         List<Member> members = list(new LambdaQueryWrapper<Member>().eq(Member::getOrganization, organization));
-        List<MemberDto> accounts = new ArrayList<>();
+        List<MemberDto> dtoList = new ArrayList<>();
         for (Member memberItem:
              members) {
             var item = accountService.getById(memberItem.getAccount());
             if (item != null) {
                 var memberDto = new MemberDto();
-                BeanUtils.copyProperties(item, memberDto);
-                accounts.add(memberDto);
+                BeanUtils.copyProperties(memberItem, memberDto);
+                memberDto.setName(item.getName());
+                dtoList.add(memberDto);
             }
         }
-        return accounts;
+        return dtoList;
     }
 
     @Override
