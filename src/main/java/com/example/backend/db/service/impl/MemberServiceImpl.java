@@ -45,11 +45,11 @@ public class MemberServiceImpl extends ServiceImpl<MemberMapper, Member> impleme
         List<MemberDto> dtoList = new ArrayList<>();
         for (Member memberItem:
              members) {
-            var item = accountService.getById(memberItem.getAccount());
-            if (item != null) {
+            var accountItem = accountService.getById(memberItem.getAccount());
+            if (accountItem != null) {
                 var memberDto = new MemberDto();
                 BeanUtils.copyProperties(memberItem, memberDto);
-                memberDto.setName(item.getName());
+                memberDto.setName(accountItem.getName());
                 dtoList.add(memberDto);
             }
         }

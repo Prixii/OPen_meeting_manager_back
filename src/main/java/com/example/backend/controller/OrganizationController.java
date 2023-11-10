@@ -98,6 +98,8 @@ public class OrganizationController {
     @ApiOperation("成员")
     @GetMapping("/member")
     public Result<List<MemberDto>> member(@RequestParam Integer creator, @RequestParam Integer organization) {
+        System.out.println("test!!!");
+        System.out.println(creator + " " + organization);
         Organization target =
                 organizationService.getOne( new LambdaQueryWrapper<Organization>().eq(Organization::getId, organization));
         if (target == null){
@@ -106,7 +108,9 @@ public class OrganizationController {
         if (!Objects.equals(target.getCreator(), creator)) {
             return Result.fail(401, "权限不足", null);
         }
-        return  Result.success(memberService.getMember(target.getId()));
+        var record = memberService.getMember(target.getId());
+        System.out.println(record);
+        return Result.success(record);
     }
 
     @ApiOperation("所在组织列表")

@@ -7,6 +7,7 @@ import com.example.backend.bean.vo.invitation.AcceptVo;
 import com.example.backend.bean.vo.invitation.CreateVo;
 import com.example.backend.bean.vo.invitation.RefuseVo;
 import com.example.backend.db.entity.Invitation;
+import com.example.backend.db.entity.Organization;
 import com.example.backend.db.service.AccountService;
 import com.example.backend.db.service.InvitationService;
 import com.example.backend.db.service.MemberService;
@@ -74,13 +75,14 @@ public class InvitationController {
 
     @ApiOperation("接受邀请")
     @PostMapping("/accept")
-    Result<Object> accept(@RequestBody AcceptVo vo) {
+    Result<Organization> accept(@RequestBody AcceptVo vo) {
         Invitation invitation = invitationService.getById(vo.getInvitation());
         if (invitation.belongTo(vo.getAccount())) {
             invitation.accept();
             memberService.addMember(invitation.getAccount(),invitation.getOrganization());
             if (invitationService.updateById(invitation)){
-                return Result.success("接受成功");
+                var organization = organizationService.getById(invitation.getOrganization());
+                return Result.success(organization);
             } else {
                 return Result.fail("");
             }
